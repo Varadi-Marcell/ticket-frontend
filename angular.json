@@ -25,9 +25,12 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+            ]
           },
           "configurations": {
             "production": {
@@ -63,7 +66,8 @@
               "browserTarget": "Ticket_frontend:build:production"
             },
             "development": {
-              "browserTarget": "Ticket_frontend:build:development"
+              "browserTarget": "Ticket_frontend:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
@@ -94,5 +98,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "dfc229ef-bac1-4950-abfb-50d340382f9c"
   }
 }
