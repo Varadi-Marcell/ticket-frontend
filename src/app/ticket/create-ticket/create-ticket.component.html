@@ -1,0 +1,74 @@
+<div class="container-md  p-lg-5">
+  <div class="container-sm bg-warning p-5 rounded-3">
+
+    <form [formGroup]="ticketForm" (ngSubmit)="onSubmit() ">
+
+      <h3><label class="col-form-label text-white">Name </label></h3>
+      <input type="text" id="name" class="form-control"
+             formControlName="name" required>
+
+
+      <div
+        *ngIf="ticketForm.controls['name'].invalid && (ticketForm.controls['name'].dirty || ticketForm.controls['name'].touched)"
+        class="alert alert-danger">
+        <div *ngIf="ticketForm.controls['name'].errors?.['required']">
+          A Név kitöltése kötelező.
+        </div>
+        <div *ngIf="ticketForm.controls['name'].errors?.['minlength']">
+          A Név minimum 5 karakterből állhat.
+        </div>
+      </div>
+
+      <h3><label class="col-form-label text-white">Location </label></h3>
+      <input type="text" id="location" class="form-control"
+             formControlName="location" required>
+
+      <div
+        *ngIf="ticketForm.controls['location'].invalid && (ticketForm.controls['location'].dirty || ticketForm.controls['location'].touched)"
+        class="alert alert-danger">
+        <div *ngIf="ticketForm.controls['location'].errors?.['required']">
+          A location kitöltése kötelező.
+        </div>
+
+        <div *ngIf="ticketForm.controls['location'].errors?.['minlength']">
+          A location minimum 5 karakterből állhat.
+        </div>
+      </div>
+
+      <h3><label class="col-form-label text-white">Genre </label></h3>
+      <input type="text" id="genre" class="form-control"
+             formControlName="genre" required>
+
+      <div
+        *ngIf="ticketForm.controls['genre'].invalid && (ticketForm.controls['genre'].dirty || ticketForm.controls['genre'].touched)"
+        class="alert alert-danger">
+        <div *ngIf="ticketForm.controls['genre'].errors?.['required']">
+          A genre kitöltése kötelező.
+        </div>
+
+        <div *ngIf="ticketForm.controls['genre'].errors?.['minlength']">
+          A genre minimum 5 karakterből állhat.
+        </div>
+      </div>
+
+      <h3><label class="col-form-label text-white">Price</label></h3>
+      <input type="number" id="price" class="form-control"
+             formControlName="price" required>
+
+      <h3><label class="col-form-label text-white">StartDate</label></h3>
+      <input type="date" class="form-control" formControlName="startDate">
+
+      <h3><label class="col-form-label text-white">EndDate</label></h3>
+      <input type="date" class="form-control" formControlName="endDate">
+
+      <button
+        type="button"
+        class="btn btn-success form-control"
+        (click)="onSubmit()"
+      >
+        Létrehozás
+      </button>
+    </form>
+  </div>
+
+</div>
