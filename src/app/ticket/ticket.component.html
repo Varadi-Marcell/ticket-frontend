@@ -9,81 +9,36 @@
         <img class="rounded img-fluid"
              src="https://cdn.logojoy.com/wp-content/uploads/2018/05/30163918/1241-768x591.png">
       </div>
-      <div class="p-3">
-        <div class="row">
-          <div class="col-sm-4">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" [(ngModel)]="filter.isAvailable" (change)="handleFilterChange('available')">
-            </div>
-          </div>
-          <div class="col-sm-4">Available</div>
 
-          <div class="col-sm-2">
-            (10)
-          </div>
-        </div>
+      <div class="p-3 container">
+        <div>Filter tickets:
 
-        <div class="row">
-          <div class="col-sm-4">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" [(ngModel)]="filter.isUpComing" (change)="handleFilterChange('upcoming')">
-            </div>
-          </div>
-          <div class="col-sm-4">Upcoming</div>
-          <div class="col-sm-2">
-            (10)
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-sm-4">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" [(ngModel)]="filter.isLimited" (change)="handleFilterChange('limited')">
-            </div>
-          </div>
-          <div class="col-sm-4">Limited</div>
-          <div class="col-sm-2">
-            (10)
-          </div>
         </div>
       </div>
-
-
       <!-- Bal oldali kereső/filter bar -->
 
-      <div class="container my-5">
-        <div class="form-group">
-          <label for="rangeInput">Price:</label>
-          <input type="range"  class="form-control-range" id="rangeInput" min="0" max="10000" [(ngModel)]="filter.price"
-                 (input)="updateRangeValue($event)">
-        </div>
-        <div class="d-flex justify-content-between">
-          <span>0 $</span>
-          <span>{{filter.price}}</span>
-          <span>10000 $</span>
-        </div>
-      </div>
+<!--      <div class="container my-5">-->
+<!--        <div class="form-group">-->
+<!--          <label for="rangeInput">Price:</label>-->
+<!--          <input type="range"  class="form-control-range" id="rangeInput" min="0" max="10000" "-->
+<!--                 (input)="updateRangeValue($event)">-->
+<!--        </div>-->
+<!--        <div class="d-flex justify-content-between">-->
+<!--          <span>0 $</span>-->
+<!--          <span>10000 $</span>-->
+<!--        </div>-->
+<!--      </div>-->
 
-      <div class="form-group">
-        <input type="text" class="form-control" placeholder="Search..">
-      </div>
 
-      <div class="card" style="box-shadow: 0 0 10px lightgray;">
-        <div class="card-body">
-          <ng-select [items]="genreArray"
-                     [placeholder]="'Selected Genre: '"
-                     bindLabel="genre"
-                     [(ngModel)]="filter.selectedGenre"
-                     >
-          </ng-select>
-        </div>
-      </div>
     </div>
 
 
 
     <div class="col-9 p-3">
+      <app-filter [list] ="filterlist" (onFilterChange)="filterChange($event)" >
+      </app-filter>
       <div class="d-flex justify-content-center">
+
         <ul class="pagination">
           <li class="page-item">
             <a class="page-link" href="#" aria-label="Previous">
@@ -104,7 +59,7 @@
       </div>
 
       <div class="row g-1">
-        <div class="col-sm" *ngFor="let ticket of displayedTicketArray">
+        <div class="col-sm" *ngFor="let ticket of ticketArray">
           <div class="card p-3 border bg-light" style="width: 18rem;">
             <img class="card-img-top"
                  src="https://st2.depositphotos.com/4284329/8270/v/950/depositphotos_82700158-stock-illustration-event-agency-logo.jpg"
@@ -113,9 +68,10 @@
               <h5 class="card-title">Event:{{ticket.name}}</h5>
               <p class="card-text">Location:{{ticket.location}}</p>
               <p class="card-text">Price:{{ticket.price}}$</p>
+              <p class="card-text">Genre:{{ticket.genre}}</p>
               <div class="container">
                 <a [routerLink]="'/view-ticket/' + ticket.id" class="btn btn-primary">View Event</a>
-                <div type="button" class="btn btn-danger" (click)="deleteTicketById(ticket.id)">Delete Ticket</div>
+                <div *ngIf="role == 'ADMIN'" type="button" class="btn btn-danger" (click)="deleteTicketById(ticket.id)">Delete Ticket</div>
               </div>
             </div>
           </div>

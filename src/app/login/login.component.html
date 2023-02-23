@@ -1,7 +1,8 @@
+<div class="container mt-5">
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
-    <label for="username">Username</label>
-    <input type="text" class="form-control" id="username" formControlName="username">
+    <label for="email">email</label>
+    <input type="text" class="form-control" id="email" formControlName="email">
   </div>
   <div class="form-group">
     <label for="password">Password</label>
@@ -9,3 +10,4 @@
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+</div>

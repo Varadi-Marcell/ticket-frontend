@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Ticket} from "../model/Ticket";
 import {TicketService} from "../service/ticket-service";
 import {TicketFilter} from "../model/TicketFilter";
+import {User} from "../model/User";
+import {AuthService} from "../service/auth.service";
+import {Observable, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-ticket',
@@ -10,64 +13,66 @@ import {TicketFilter} from "../model/TicketFilter";
 })
 export class TicketComponent implements OnInit {
 
+  @Input() list;
+  @Output() onFilterChange = new EventEmitter();
 
-
+  @Input()
+  role ;
+  user: User;
+  genre;
+  location;
   ticketArray: Ticket[];
-  displayedTicketArray: Ticket[];
+  copyData: Ticket[];
 
-  filteredTickets: Ticket[];
-
-  genreArray: string[];
-  filter: TicketFilter = {
-    isAvailable: false,
-    isUpComing: false,
-    isLimited: false,
-    price: 10000,
-    selectedGenre: '',
+  filterlist = {
+    genre : ['Rock', 'Pop', 'Jazz', 'Blues'],
+    location: ['Budapest', 'Debrecen', 'Miskolc']
   };
-  constructor(private ticketService: TicketService) {
+  private isLoggedin: boolean;
+  constructor(private ticketService: TicketService, private authService: AuthService) {
   }
   updateRangeValue(event) {
-    this.filter.price = event.target.value;
+    // this.filter.price = event.target.value;
   }
 
-
-
   ngOnInit() {
+    this.authService.user.subscribe(user => this.user = user);
+    this.authService.isLoggedIn.subscribe(value => {
+      this.isLoggedin = value;
+    })
+
+    if (this.isLoggedin){
+      this.role = this.user.role;
+    } else {
+      this.role = "GUEST";
+    }
+
     this.ticketService.getAllTicket()
       .subscribe(
         data => {
           this.ticketArray = data;
-          this.displayedTicketArray = data;
-          this.genreArray = Array.from(new Set(this.ticketArray.map(item => item.genre)));
+          this.copyData = this.ticketArray;
         }
       );
+  }
+  filterChange(appliedfilters) {
+    this.ticketArray = this.copyData;
+
+    this.genre = appliedfilters.appliedFilterValues.genre;
+    this.location = appliedfilters.appliedFilterValues.location;
+
+    if (this.genre){
+      this.ticketArray = this.ticketArray.filter(item => item.genre === this.genre);
+    }
+
+    if (this.location){
+      this.ticketArray = this.ticketArray.filter(item => item.location === this.location);
+    }
   }
 
   deleteTicketById(id: number) {
     this.ticketService.deleteTicketById(id).subscribe();
   }
-
-  handleFilterChange(filterType: string) {
-    switch (filterType) {
-      case 'available':
-        this.displayedTicketArray = this.ticketArray.filter(ticket => ticket.isAvailable);
-        break;
-      case 'upcoming':
-        this.displayedTicketArray = this.ticketArray.filter(ticket => ticket.isUpComing);
-        break;
-      case 'limited':
-        this.displayedTicketArray = this.ticketArray.filter(ticket => ticket.isLimited);
-        break;
-      default:
-        this.displayedTicketArray = this.ticketArray;
-        break;
-    }
-  }
-
-
-
-
 
 
 }

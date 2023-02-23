@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {
   Router, Resolve,
   RouterStateSnapshot,
@@ -7,15 +7,16 @@ import {
 import { Observable, of } from 'rxjs';
 import {Ticket} from "../model/Ticket";
 import {TicketService} from "./ticket-service";
+import {EntityService} from "./EntityService";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TicketResolver implements Resolve<Ticket> {
 
-  constructor(private ticketService: TicketService) {
+  constructor(private  service: TicketService) {
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Ticket> {
-    return this.ticketService.getTicketById((route.params['id']));
+    return this.service.getTicketById((route.params['id']));
   }
 }

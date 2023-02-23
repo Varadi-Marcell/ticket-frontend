@@ -14,6 +14,9 @@ import { CreateTicketComponent } from './ticket/create-ticket/create-ticket.comp
 import { LoginComponent } from './login/login.component';
 import {TokenInterceptor} from "./interceptor/tokenInterceptor";
 import { RegisterComponent } from './register/register.component';
+import { UserComponent } from './user/user.component';
+import { ViewUserComponent } from './user/view-user/view-user.component';
+import {GenericListFilterModule} from "generic-list-filter";
 
 @NgModule({
   declarations: [
@@ -23,7 +26,9 @@ import { RegisterComponent } from './register/register.component';
     ViewTicketComponent,
     CreateTicketComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    UserComponent,
+    ViewUserComponent
   ],
     imports: [
         BrowserModule,
@@ -32,10 +37,11 @@ import { RegisterComponent } from './register/register.component';
         ReactiveFormsModule,
         HttpClientModule,
         NgbModule,
-        NgSelectModule
+        NgSelectModule,
+      GenericListFilterModule
     ],
   providers: [
-    {provide:HTTP_INTERCEPTORS,useClass:TokenInterceptor,multi:true}
+    {provide:HTTP_INTERCEPTORS,useClass:TokenInterceptor,multi:true},
   ],
   bootstrap: [AppComponent]
 })

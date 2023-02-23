@@ -6,6 +6,9 @@ import {TicketResolver} from "./service/ticket.resolver";
 import {CreateTicketComponent} from "./ticket/create-ticket/create-ticket.component";
 import {RegisterComponent} from "./register/register.component";
 import {LoginComponent} from "./login/login.component";
+import {UserComponent} from "./user/user.component";
+import {ViewUserComponent} from "./user/view-user/view-user.component";
+import {AuthGuard} from "./service/auth.guard";
 
 const routes: Routes = [
   {
@@ -19,7 +22,9 @@ const routes: Routes = [
   },
   {
     path: "create-ticket",
-    component: CreateTicketComponent
+    component: CreateTicketComponent,
+    canActivate:[AuthGuard]
+
   },
   {
     path: "register",
@@ -28,7 +33,18 @@ const routes: Routes = [
   {
     path: "login",
     component: LoginComponent
-  }
+  },
+
+  {
+    path:"user",
+    component: UserComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path: "view-user/:id",
+    component: ViewUserComponent,
+    resolve: {preload:TicketResolver}
+  },
 
 ];
 

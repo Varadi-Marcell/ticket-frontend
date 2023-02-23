@@ -8,8 +8,8 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = localStorage.getItem('JWT_TOKEN');
-
+    const token = this.authService.getToken();
+    console.log(`Bearer ${token}`);
     if (token) {
       request = request.clone({
         setHeaders: {
