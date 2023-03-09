@@ -1,0 +1,44 @@
+<div class="container-md  pt-5">
+  <div class="row bg-white">
+    <div class="col-lg-6">
+      <div *ngFor="let item of cart.itemList" class="bg-white p-3 mx-auto text-center">
+        <div class="row rounded">
+          <div class="col">
+            <img class="card-img-top"
+                 src="https://st2.depositphotos.com/4284329/8270/v/950/depositphotos_82700158-stock-illustration-event-agency-logo.jpg"
+                 alt="Card image cap">
+          </div>
+          <div class="col text-lg-start">
+            <div>TicketID:{{item.ticketId}}</div>
+            <div>Event:{{item.event}}</div>
+            <div>StartDate:{{item.startDate}}</div>
+            <div>Quantity:
+              <select [(ngModel)]="item.quantity">
+                <option *ngFor="let number of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" [value]="number">{{number}}</option>
+              </select>
+            </div>
+            <div>Amount:{{item.amount}}</div>
+            <div>
+              <button type="button" (click)="removeItemFromCart(item.itemId)" class="btn btn-outline-danger">
+                <i class="bi bi-trash"></i>
+                Delete
+              </button>
+              <button type="button" class="btn btn-outline-primary" (click)="saveItem(item)">
+                Save
+              </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 p-5">
+      <div class="bg-primary p-3 mx-auto text-center rounded">
+        Tovább a pénztárhoz
+      </div>
+      <div class="bg-opacity-50 bg-dark p-3 mx-auto text-center rounded">
+          Amount: 1000$
+      </div>
+    </div>
+  </div>
+</div>
