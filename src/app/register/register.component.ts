@@ -42,9 +42,7 @@ export class RegisterComponent implements OnInit {
       .subscribe(
         (response) => {
           localStorage.setItem('JWT_TOKEN', response.token);
-          complete:() => {
-            this.ngZone.run(() =>this.router.navigateByUrl('/login'));
-          }
+          this.router.navigate(['/login']);
         },
       );
   }

@@ -3,6 +3,7 @@ import {AuthService} from "../service/auth.service";
 import {map} from "rxjs";
 import {Router} from "@angular/router";
 import {User} from "../model/User";
+import {UserService} from "../service/user.service";
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +18,8 @@ export class NavbarComponent implements OnInit{
   user: User;
 
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService,
+              private router: Router) {
   }
   // ngOnInit(): void {
   //   this.authService.isLoggedIn.subscribe(value => {

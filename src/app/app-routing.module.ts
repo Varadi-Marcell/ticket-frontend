@@ -9,6 +9,11 @@ import {LoginComponent} from "./login/login.component";
 import {UserComponent} from "./user/user.component";
 import {ViewUserComponent} from "./user/view-user/view-user.component";
 import {AuthGuard} from "./service/auth.guard";
+import {UserResolver} from "./service/user.resolver";
+import {ViewProfileComponent} from "./user/view-profile/view-profile.component";
+import {ViewProfileResolver} from "./service/view-profile.resolver";
+import {CartComponent} from "./cart/cart.component";
+import {ViewCartResolver} from "./service/view-cart.resolver";
 
 const routes: Routes = [
   {
@@ -18,7 +23,7 @@ const routes: Routes = [
   {
     path: "view-ticket/:id",
     component: ViewTicketComponent,
-    resolve: {preload:TicketResolver}
+    resolve: {ticket:TicketResolver}
   },
   {
     path: "create-ticket",
@@ -43,8 +48,18 @@ const routes: Routes = [
   {
     path: "view-user/:id",
     component: ViewUserComponent,
-    resolve: {preload:TicketResolver}
+    resolve: {user:UserResolver}
   },
+  {
+    path: "view-profile",
+    component: ViewProfileComponent,
+    resolve: {profile: ViewProfileResolver}
+  },
+  {
+    path:"view-cart",
+    component: CartComponent,
+    resolve: {cart: ViewCartResolver}
+  }
 
 ];
 

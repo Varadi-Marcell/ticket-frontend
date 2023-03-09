@@ -24,11 +24,11 @@ export class TicketService {
   }
 
   deleteTicketById(id:number):Observable<number>{
-    return this.http.delete<number>('/api/api/v1/ticket-and-user/'+id);
+    return this.http.delete<number>('/apis/api/v1/ticket-and-user/'+id);
   }
 
   createTicket(ticket:any){
-    return this.http.post('/api/api/v1ticket',ticket);
+    return this.http.post('/api/api/v1/ticket',ticket);
   }
 
   // getEntityById(id: number): Observable<any> {

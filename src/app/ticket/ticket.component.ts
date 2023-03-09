@@ -4,7 +4,8 @@ import {TicketService} from "../service/ticket-service";
 import {TicketFilter} from "../model/TicketFilter";
 import {User} from "../model/User";
 import {AuthService} from "../service/auth.service";
-import {Observable, Subscription} from "rxjs";
+import {Observable, Subscription, tap} from "rxjs";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-ticket',
@@ -28,8 +29,10 @@ export class TicketComponent implements OnInit {
     genre : ['Rock', 'Pop', 'Jazz', 'Blues'],
     location: ['Budapest', 'Debrecen', 'Miskolc']
   };
-  private isLoggedin: boolean;
-  constructor(private ticketService: TicketService, private authService: AuthService) {
+  isLoggedin: boolean;
+  constructor(private ticketService: TicketService,
+              private authService: AuthService,
+              private toastService:ToastrService) {
   }
   updateRangeValue(event) {
     // this.filter.price = event.target.value;
@@ -71,7 +74,11 @@ export class TicketComponent implements OnInit {
   }
 
   deleteTicketById(id: number) {
-    this.ticketService.deleteTicketById(id).subscribe();
+    this.ticketService.deleteTicketById(id).pipe(
+      tap(()=>this.toastService.error("Item Removed!","Info",{
+        positionClass:"toast-bottom-center"
+      }))
+    ).subscribe();
   }
 
 

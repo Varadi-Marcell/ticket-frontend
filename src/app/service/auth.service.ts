@@ -14,7 +14,7 @@ export class AuthService {
   isLoggedIn = this._isLoggedIn$.asObservable();
 
   constructor(private http:HttpClient) {
-    this._isLoggedIn$.next(!!this.getToken());
+    this._isLoggedIn$.next(!!this.getUser());
      this.userSubject.next(this.getUser());
   }
 

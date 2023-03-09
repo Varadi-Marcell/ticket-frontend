@@ -39,10 +39,17 @@
         </li>
 
       </ul>
-      <ul class="navbar-nav"*ngIf="isLoggedin">
+      <ul class="navbar-nav" *ngIf="isLoggedin">
+        <li>
+          <a routerLink="view-cart">
+            <i class="fa" style="font-size:24px">&#xf07a;</i>
+            <span class='badge badge-warning' id='lblCartCount'> 5 </span>
+          </a>
+
+        </li>
         <h5>
           <li class="nav-item dropdown">
-            <a class="nav-link" routerLink="ticket" role="button" aria-expanded="false">
+            <a class="nav-link" routerLink="view-profile" role="button" aria-expanded="false">
               <i class="bi bi-person-circle"></i>
               View My Profile
             </a>
