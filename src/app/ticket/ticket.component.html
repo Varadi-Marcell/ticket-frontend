@@ -17,45 +17,60 @@
       </div>
       <!-- Bal oldali kereső/filter bar -->
 
-<!--      <div class="container my-5">-->
-<!--        <div class="form-group">-->
-<!--          <label for="rangeInput">Price:</label>-->
-<!--          <input type="range"  class="form-control-range" id="rangeInput" min="0" max="10000" "-->
-<!--                 (input)="updateRangeValue($event)">-->
-<!--        </div>-->
-<!--        <div class="d-flex justify-content-between">-->
-<!--          <span>0 $</span>-->
-<!--          <span>10000 $</span>-->
-<!--        </div>-->
-<!--      </div>-->
+      <!--      <div class="container my-5">-->
+      <!--        <div class="form-group">-->
+      <!--          <label for="rangeInput">Price:</label>-->
+      <!--          <input type="range"  class="form-control-range" id="rangeInput" min="0" max="10000" "-->
+      <!--                 (input)="updateRangeValue($event)">-->
+      <!--        </div>-->
+      <!--        <div class="d-flex justify-content-between">-->
+      <!--          <span>0 $</span>-->
+      <!--          <span>10000 $</span>-->
+      <!--        </div>-->
+      <!--      </div>-->
 
 
     </div>
 
-
-
     <div class="col-9 p-3">
+      <div class="row form-control-lg">
+        <div class="col">
+          asd
+        </div>
 
-      <div class="d-flex justify-content-center">
+        <div class="col">
+          <div class="d-flex justify-content-center">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
 
-        <ul class="pagination">
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-              <span class="sr-only">Previous</span>
-            </a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-              <span class="sr-only">Next</span>
-            </a>
-          </li>
-        </ul>
+              <li *ngFor="let item of length;let i = index" class="page-item">
+                <p class="page-link btn" (click)="updatePageNumber(item)">{{item+1}}</p>
+              </li>
+
+              <li class="page-item">
+                <a class="page-link" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col text-end">
+          Pagesize:
+          <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+            <option *ngFor="let number of [10, 20, 50, 100]" [ngValue]="number">{{number}}</option>
+          </select>
+        </div>
+        <!--            getpaginationTickets(1,number)-->
       </div>
+
 
       <div class="row g-1">
         <div class="col-sm" *ngFor="let ticket of ticketArray">
@@ -69,16 +84,19 @@
               <p class="card-text">Location:{{ticket.location}}</p>
               <p class="card-text">Price:{{ticket.price}}$</p>
               <p class="card-text">Genre:{{ticket.genre}}</p>
+              <p class="card-text">StartDate:{{ticket.startDate}}</p>
               <div class="container">
                 <div class="row">
                   <div class="col-9">
                     <a [routerLink]="'/view-ticket/' + ticket.id" class="btn btn-primary">View Event</a>
 
-                    <div *ngIf="role == 'ADMIN'" type="button" class="btn btn-danger" (click)="deleteTicketById(ticket.id)">Delete Ticket</div>
+                    <div *ngIf="role == 'ADMIN'" type="button" class="btn btn-danger"
+                         (click)="deleteTicketById(ticket.id)">Delete Ticket
+                    </div>
 
                   </div>
                   <div class="col-3">
-                    <div *ngIf="isLoggedin" class="btn btn-success" type="button">
+                    <div *ngIf="isLoggedin" class="btn btn-success" type="button" (click)="buyTicket(ticket)">
                       <i class="bi bi-cart"></i>
                       <div>Buy</div>
                     </div>
@@ -92,5 +110,5 @@
 
     </div>
   </div>
-
 </div>
+

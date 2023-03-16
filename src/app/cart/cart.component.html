@@ -17,7 +17,7 @@
                 <option *ngFor="let number of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" [value]="number">{{number}}</option>
               </select>
             </div>
-            <div>Amount:{{item.amount}}</div>
+            <div>Price:{{item.amount}}</div>
             <div>
               <button type="button" (click)="removeItemFromCart(item.itemId)" class="btn btn-outline-danger">
                 <i class="bi bi-trash"></i>
@@ -33,11 +33,11 @@
       </div>
     </div>
     <div class="col-lg-4 p-5">
-      <div class="bg-primary p-3 mx-auto text-center rounded">
+      <div class="p-3 mx-auto text-center rounded btn btn-primary w-100" routerLink="payment">
         Tovább a pénztárhoz
       </div>
-      <div class="bg-opacity-50 bg-dark p-3 mx-auto text-center rounded">
-          Amount: 1000$
+      <div class="bg-opacity-50 bg-dark p-3 mx-auto text-center rounded w-100">
+          Amount: {{cart.amount}}$
       </div>
     </div>
   </div>

@@ -1,4 +1,8 @@
-.header{background:rgb(0, 178, 255);color:#fff;}
+.header {
+  background: rgb(0, 178, 255);
+  color: #fff;
+}
+
 #lblCartCount {
   font-size: 12px;
   background: #ff0000;
@@ -7,6 +11,7 @@
   vertical-align: top;
   margin-left: -10px;
 }
+
 .badge {
   padding-left: 9px;
   padding-right: 9px;
@@ -18,4 +23,14 @@
 .label-warning[href],
 .badge-warning[href] {
   background-color: #c67605;
+}
+
+#second li a {
+  color: white;
+}
+#second a {
+  color: white;
+}
+#second li div {
+  color: white;
 }

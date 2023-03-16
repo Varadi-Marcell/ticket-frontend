@@ -6,6 +6,8 @@ import {User} from "../model/User";
 import {AuthService} from "../service/auth.service";
 import {Observable, Subscription, tap} from "rxjs";
 import {ToastrService} from "ngx-toastr";
+import {OrderManagementService} from "../service/order-management.service";
+import {Item} from "../model/Item";
 
 @Component({
   selector: 'app-ticket',
@@ -30,13 +32,19 @@ export class TicketComponent implements OnInit {
     location: ['Budapest', 'Debrecen', 'Miskolc']
   };
   isLoggedin: boolean;
+  pageSize:number = 10;
+  page:number=1;
+  length:number[];
+  arraySize:number;
   constructor(private ticketService: TicketService,
               private authService: AuthService,
-              private toastService:ToastrService) {
+              private toastService:ToastrService,
+              private orderService:OrderManagementService) {
   }
   updateRangeValue(event) {
     // this.filter.price = event.target.value;
   }
+
 
   ngOnInit() {
     this.authService.user.subscribe(user => this.user = user);
@@ -50,11 +58,16 @@ export class TicketComponent implements OnInit {
       this.role = "GUEST";
     }
 
-    this.ticketService.getAllTicket()
+    this.ticketService.getAllTicket(0,10)
       .subscribe(
         data => {
-          this.ticketArray = data;
+          this.ticketArray = data.ticketDtoList;
           this.copyData = this.ticketArray;
+          // Array(5).fill().map((x,i)=>i);
+          // this.length = Math.ceil(this.ticketArray.length / this.pageSize);
+          this.arraySize=data.size;
+          // @ts-ignore
+          this.length = Array(Math.ceil(data.size / this.pageSize)).fill().map((x,i)=>i);
         }
       );
   }
@@ -82,4 +95,33 @@ export class TicketComponent implements OnInit {
   }
 
 
+  buyTicket(ticket:Ticket) {
+    const item={
+      amount : ticket.price,
+      quantity: 1,
+      ticketId:ticket.id
+    };
+    this.orderService.addItemToCart(item).pipe(
+      tap(()=>this.toastService.success("Ticket Added To Cart!","Info",{
+        positionClass:"toast-bottom-center"
+      }))
+    ).subscribe();
+  }
+
+  getpaginationTickets(page:number,size:number){
+    this.ticketService.getAllTicket(page,size).subscribe(
+      data => this.ticketArray=data.ticketDtoList
+    );
+  }
+
+  onPageSizeChange() {
+    // @ts-ignore
+    this.length = Array(Math.ceil(this.arraySize / this.pageSize)).fill().map((x,i)=>i);
+    this.getpaginationTickets(this.page,this.pageSize);
+  }
+
+  updatePageNumber(event){
+    this.page=event;
+    this.getpaginationTickets(this.page,this.pageSize);
+  }
 }

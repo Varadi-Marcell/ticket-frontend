@@ -1,15 +1,59 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light ">
   <div class="container-fluid">
-    <a class="navbar-brand">TicketWebshop</a>
+    <a class="navbar-brand"><h1>TicketWebshop</h1></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" routerLink="">Home</a>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" routerLink="user" role="button" data-bs-toggle="dropdown"
+             aria-expanded="false">
+            Contact Us
+          </a>
         </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" routerLink="ticket" role="button" data-bs-toggle="dropdown"
+             aria-expanded="false">
+            About us
+          </a>
+        </li>
+
+
+      </ul>
+      <ul class="navbar-nav" *ngIf="isLoggedin">
+        <li>
+          <a routerLink="view-cart">
+            <i class="fa" style="font-size:24px">&#xf07a;</i>
+            <span class='badge badge-warning' id='lblCartCount'> 5 </span>
+          </a>
+
+        </li>
+        <h5>
+          <li class="nav-item dropdown">
+            <a class="nav-link" routerLink="view-profile" role="button" aria-expanded="false">
+              <i class="bi bi-person-circle"></i>
+              View My Profile
+            </a>
+          </li>
+        </h5>
+      </ul>
+    </div>
+  </div>
+
+</nav>
+<nav class="navbar navbar-expand-lg  bg-dark opacity-100">
+  <div class="container" id="second">
+    <a class="navbar-brand">
+      <h1>Home</h1>
+    </a>
+
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
         <li *ngIf="role =='ADMIN'" class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" routerLink="user" role="button" data-bs-toggle="dropdown"
@@ -39,23 +83,8 @@
         </li>
 
       </ul>
-      <ul class="navbar-nav" *ngIf="isLoggedin">
-        <li>
-          <a routerLink="view-cart">
-            <i class="fa" style="font-size:24px">&#xf07a;</i>
-            <span class='badge badge-warning' id='lblCartCount'> 5 </span>
-          </a>
 
-        </li>
-        <h5>
-          <li class="nav-item dropdown">
-            <a class="nav-link" routerLink="view-profile" role="button" aria-expanded="false">
-              <i class="bi bi-person-circle"></i>
-              View My Profile
-            </a>
-          </li>
-        </h5>
-      </ul>
     </div>
   </div>
+
 </nav>

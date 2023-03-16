@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {catchError, Observable, throwError} from "rxjs";
+import {catchError, Observable, tap, throwError} from "rxjs";
 import { Ticket } from "../model/Ticket";
 import {EntityService} from "./EntityService";
+import {TicketDto} from "../model/TicketDto";
 
 
 
@@ -15,8 +16,13 @@ export class TicketService {
   constructor(private http: HttpClient) {
   }
 
-  getAllTicket(): Observable<Ticket[]> {
-    return this.http.get<Ticket[]>('/apis/api/v1/ticket');
+  getAllTicket(page:number,size:number): Observable<TicketDto> {
+    return this.http.get<TicketDto>('/apis/api/v1/ticket',{
+      params:{
+        page:page,
+        size:size
+      }
+    })
   }
 
   getTicketById(id:number) : Observable<Ticket>{
@@ -24,7 +30,7 @@ export class TicketService {
   }
 
   deleteTicketById(id:number):Observable<number>{
-    return this.http.delete<number>('/apis/api/v1/ticket-and-user/'+id);
+    return this.http.delete<number>('/apis/api/v1/ticket/'+id);
   }
 
   createTicket(ticket:any){

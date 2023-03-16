@@ -14,6 +14,8 @@ import {ViewProfileComponent} from "./user/view-profile/view-profile.component";
 import {ViewProfileResolver} from "./service/view-profile.resolver";
 import {CartComponent} from "./cart/cart.component";
 import {ViewCartResolver} from "./service/view-cart.resolver";
+import {PaymentComponent} from "./cart/payment/payment.component";
+import {OrderResolver} from "./service/order.resolver";
 
 const routes: Routes = [
   {
@@ -53,13 +55,23 @@ const routes: Routes = [
   {
     path: "view-profile",
     component: ViewProfileComponent,
-    resolve: {profile: ViewProfileResolver}
+    resolve: {
+      profile: ViewProfileResolver,
+      order:OrderResolver
+    }
   },
   {
     path:"view-cart",
     component: CartComponent,
-    resolve: {cart: ViewCartResolver}
-  }
+    resolve: {cart: ViewCartResolver},
+  },
+  {
+    path:"view-cart/payment",
+    component:PaymentComponent,
+    resolve: {cart:ViewCartResolver}
+
+  },
+
 
 ];
 
