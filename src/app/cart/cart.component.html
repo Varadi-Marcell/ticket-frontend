@@ -33,7 +33,7 @@
       </div>
     </div>
     <div class="col-lg-4 p-5">
-      <div class="p-3 mx-auto text-center rounded btn btn-primary w-100" routerLink="payment">
+      <div *ngIf="checkCartItems()" class="p-3 mx-auto text-center rounded btn btn-primary w-100" routerLink="payment">
         Tovább a pénztárhoz
       </div>
       <div class="bg-opacity-50 bg-dark p-3 mx-auto text-center rounded w-100">

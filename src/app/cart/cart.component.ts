@@ -5,6 +5,7 @@ import {Item} from "../model/Item";
 import {OrderManagementService} from "../service/order-management.service";
 import {ToastrService} from "ngx-toastr";
 import {tap} from "rxjs";
+import {flip} from "@popperjs/core";
 
 @Component({
   selector: 'app-cart',
@@ -38,5 +39,12 @@ export class CartComponent implements OnInit{
         positionClass:"toast-bottom-center"
       }))
     ).subscribe();
+  }
+
+  checkCartItems():boolean{
+    if (this.cart && this.cart.itemList==null){
+
+    }
+    return this.cart && this.cart.itemList.length==0 ? false : true;
   }
 }

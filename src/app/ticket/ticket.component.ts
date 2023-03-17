@@ -33,7 +33,7 @@ export class TicketComponent implements OnInit {
   };
   isLoggedin: boolean;
   pageSize:number = 10;
-  page:number=1;
+  page:number;
   length:number[];
   arraySize:number;
   constructor(private ticketService: TicketService,
@@ -117,11 +117,14 @@ export class TicketComponent implements OnInit {
   onPageSizeChange() {
     // @ts-ignore
     this.length = Array(Math.ceil(this.arraySize / this.pageSize)).fill().map((x,i)=>i);
-    this.getpaginationTickets(this.page,this.pageSize);
+    this.page=0;
+    this.getpaginationTickets(0,this.pageSize);
   }
 
   updatePageNumber(event){
-    this.page=event;
-    this.getpaginationTickets(this.page,this.pageSize);
+      this.page = event;
+      this.getpaginationTickets(this.page,this.pageSize);
   }
+
+
 }
