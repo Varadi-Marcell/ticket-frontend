@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -21,7 +21,11 @@ import {CartComponent} from './cart/cart.component';
 import {ToastrModule} from "ngx-toastr";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { PaymentComponent } from './cart/payment/payment.component';
-
+import {StompService} from "./service/stomp.service";
+export function preloadProviderFactory(stompService: StompService) {
+  return async () => stompService.connect();
+  // return (): void => serverMetadataService.connect();
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,8 +55,18 @@ import { PaymentComponent } from './cart/payment/payment.component';
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
+    // {provide: APP_INITIALIZER, useFactory:preloadProviderFactory,deps:[]}
+    {      provide: APP_INITIALIZER,
+      useFactory: preloadProviderFactory,
+      deps: [StompService],
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
+
+
 export class AppModule {
+
+
 }

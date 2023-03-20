@@ -7,7 +7,6 @@ import {
 import { Observable, of } from 'rxjs';
 import {Ticket} from "../model/Ticket";
 import {TicketService} from "./ticket-service";
-import {EntityService} from "./EntityService";
 
 @Injectable({
   providedIn: 'root'

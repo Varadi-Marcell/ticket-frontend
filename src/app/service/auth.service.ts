@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {BehaviorSubject, Observable, tap} from "rxjs";
 import {User} from "../model/User";
+import {StompService} from "./stomp.service";
 
 @Injectable({
   providedIn: 'root'

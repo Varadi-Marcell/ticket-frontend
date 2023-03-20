@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Item } from "../model/Item";
 import {Observable, tap} from "rxjs";
-import {Order} from "../model/Order";
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderManagementService {
+
 
   constructor(private http:HttpClient) {
   }
@@ -21,6 +21,7 @@ export class OrderManagementService {
   }
 
   viewCart():Observable<any>{
+
     return this.http.get("/apis/api/v1/cart/view-cart").pipe(
       tap(res =>{
         console.log(res);

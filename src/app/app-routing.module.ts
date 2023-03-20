@@ -21,6 +21,7 @@ const routes: Routes = [
   {
     path: 'ticket',
     component: TicketComponent,
+    // resolve:{ticketArr:LoadTicketResolver}
   },
   {
     path: "view-ticket/:id",
