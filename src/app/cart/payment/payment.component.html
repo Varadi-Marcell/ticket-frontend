@@ -1,0 +1,35 @@
+<div class="container mt-5 px-4">
+  <div class="row">
+    <h1>Checkout</h1>
+    <div class="col pt-3">
+      <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+        <div class="form-group mt-5" id="cucc">
+          <h2>User Details</h2>
+
+          <input type="text" class="form-control mb-3" id="email" formControlName="email" placeholder="Email">
+
+          <input type="text" class="form-control mb-3" placeholder="Firstname" id="firstName"
+                 formControlName="firstName">
+
+          <input type="text" class="form-control mb-3" placeholder="Lastname" id="lastName" formControlName="lastName">
+
+<!--          <input type="text" class="form-control mb-3" formControlName="creditCardNumber" [(ngModel)]="creditCardNumber"-->
+<!--                 (input)="onCreditCardNumberChange()" placeholder="1234-5678-9012-3456">-->
+
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+
+
+    <div class="col pt-3">
+      <h2>Basket</h2>
+      <div *ngFor="let item of cart.itemList" class="d-flex justify-content-between">
+        <h4 class="mb-0">Event:{{item.event}}</h4>
+        <div class="text-end"><h4>{{item.quantity * item.amount}} $</h4></div>
+      </div>
+
+      <div class="text-end mt-5"><h3>Total:{{cart.amount}}$</h3></div>
+    </div>
+  </div>
+</div>

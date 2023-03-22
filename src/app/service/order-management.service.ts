@@ -21,7 +21,6 @@ export class OrderManagementService {
   }
 
   viewCart():Observable<any>{
-
     return this.http.get("/apis/api/v1/cart/view-cart").pipe(
       tap(res =>{
         console.log(res);
