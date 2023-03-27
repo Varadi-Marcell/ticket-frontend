@@ -10,26 +10,15 @@
              src="https://cdn.logojoy.com/wp-content/uploads/2018/05/30163918/1241-768x591.png">
       </div>
 
-      <div class="p-3 container">
-        <div>Filter tickets:
 
+      <form [formGroup]="filterForm" (ngSubmit)="filterTicketsByPrice()">
+        Filter By Price:
+        <div class="input-group mb-3">
+          <input type="number" formControlName="minPrice" class="form-control" placeholder="minPrice" >
+          <input type="number" formControlName="maxPrice" class="form-control" placeholder="maxPrice">
         </div>
-      </div>
-      <!-- Bal oldali kereső/filter bar -->
-
-      <!--      <div class="container my-5">-->
-      <!--        <div class="form-group">-->
-      <!--          <label for="rangeInput">Price:</label>-->
-      <!--          <input type="range"  class="form-control-range" id="rangeInput" min="0" max="10000" "-->
-      <!--                 (input)="updateRangeValue($event)">-->
-      <!--        </div>-->
-      <!--        <div class="d-flex justify-content-between">-->
-      <!--          <span>0 $</span>-->
-      <!--          <span>10000 $</span>-->
-      <!--        </div>-->
-      <!--      </div>-->
-
-
+        <button type="submit" class="btn btn-primary">Filter</button>
+      </form>
     </div>
 
     <div class="col-9 p-3">
@@ -56,7 +45,6 @@
             <option *ngFor="let number of [10, 20, 50, 100]" [ngValue]="number">{{number}}</option>
           </select>
         </div>
-        <!--            getpaginationTickets(1,number)-->
       </div>
 
 

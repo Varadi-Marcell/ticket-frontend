@@ -34,6 +34,10 @@ export class UserService {
 
 
   getUser() : Observable<User>{
-    return this.http.get<User>('/apis/api/v1/user/profile');
+    return this.http.get<User>('/apis/api/v1/user/profile').pipe(
+      tap(data=>
+        console.log(data)
+      )
+    );
   }
 }

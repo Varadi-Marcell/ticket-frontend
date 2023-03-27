@@ -39,10 +39,16 @@ export class AuthService {
   getUser(): User {
     return JSON.parse(localStorage.getItem('user'));
   }
-  logout(){
-    this.userSubject.next(null);
-    this._isLoggedIn$.next(false);
-    localStorage.removeItem("JWT_TOKEN");
-    localStorage.removeItem('user');
+
+  logout() {
+    this.http.post('/apis/logout', {}).subscribe(
+      () => {
+        this.userSubject.next(null);
+        this._isLoggedIn$.next(false);
+        localStorage.removeItem("JWT_TOKEN");
+        localStorage.removeItem('user');
+      }
+    );
   }
+
 }

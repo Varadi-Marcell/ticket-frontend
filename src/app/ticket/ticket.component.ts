@@ -9,6 +9,8 @@ import {OrderManagementService} from "../service/order-management.service";
 import {StompService} from "../service/stomp.service";
 import {TicketDto} from "../model/TicketDto";
 import {ActivatedRoute} from "@angular/router";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {minMaxValidator} from "./validator";
 
 
 @Component({
@@ -38,23 +40,26 @@ export class TicketComponent implements OnInit {
   page: number;
   length: number[];
   arraySize: number;
-  private subscriptions: Array<Subscription> = new Array<Subscription>();
+  filterForm: FormGroup;
 
   constructor(private ticketService: TicketService,
               private authService: AuthService,
               private toastService: ToastrService,
               private orderService: OrderManagementService,
-              private stompService: StompService) {
-
+              private stompService: StompService,
+              private formBuilder: FormBuilder) {
+    this.filterForm = this.formBuilder.group({
+      minPrice: ['', [Validators.required, Validators.min(0)]],
+      maxPrice: ['', [Validators.required, Validators.max(1000)]],
+    }, {validator: minMaxValidator()});
   }
 
 
   async ngOnInit() {
-
     try {
       await this.stompService.connect();
       this.subscribeToArrayPayload();
-      this.btn(0,10);
+      this.pagination(0, 10);
 
     } catch (error) {
       console.error('Error connecting to StompService:', error);
@@ -71,49 +76,14 @@ export class TicketComponent implements OnInit {
       this.role = "GUEST";
     }
 
-    this.btn(0,10);
+    this.pagination(0, 10);
 
-    this.stompService.getTickets().subscribe(data => {
-      this.ticketArray=data.ticketDtoList;
-      this.arraySize = data.size;
-            // @ts-ignore
-            this.length = Array(Math.ceil(data.size / this.pageSize)).fill().map((x, i) => i);
-
-    });
-
-    // this.ticketService.getAllTicket(0, 10)
-    //   .subscribe(
-    //     data => {
-    //       this.ticketArray = data.ticketDtoList;
-    //       this.copyData = this.ticketArray;
-    //       // Array(5).fill().map((x,i)=>i);
-    //       // this.length = Math.ceil(this.ticketArray.length / this.pageSize);
-    //       this.arraySize = data.size;
-    //       // @ts-ignore
-    //       this.length = Array(Math.ceil(data.size / this.pageSize)).fill().map((x, i) => i);
-    //     }
-    //   );
 
   }
 
-  btn(page:number,size:number){
-    let message = JSON.stringify({"page":page,"size":size});
-    this.stompService.stompClient.send('/frontend/secret',{},message);
-  }
-
-  filterChange(appliedfilters) {
-    this.ticketArray = this.copyData;
-
-    this.genre = appliedfilters.appliedFilterValues.genre;
-    this.location = appliedfilters.appliedFilterValues.location;
-
-    if (this.genre) {
-      this.ticketArray = this.ticketArray.filter(item => item.genre === this.genre);
-    }
-
-    if (this.location) {
-      this.ticketArray = this.ticketArray.filter(item => item.location === this.location);
-    }
+  pagination(page: number, size: number) {
+    let message = JSON.stringify({"page": page, "size": size});
+    this.stompService.stompClient.send('/frontend/secret', {}, message);
   }
 
   private subscribeToArrayPayload() {
@@ -126,7 +96,7 @@ export class TicketComponent implements OnInit {
     });
 
     this.stompService.getTickets().subscribe(data => {
-      this.ticketArray=data.ticketDtoList;
+      this.ticketArray = data.ticketDtoList;
       this.arraySize = data.size;
       // @ts-ignore
       this.length = Array(Math.ceil(data.size / this.pageSize)).fill().map((x, i) => i);
@@ -134,11 +104,23 @@ export class TicketComponent implements OnInit {
     });
   }
 
+  filterTicketsByPrice() {
+
+    let message = JSON.stringify({
+      "minPrice": this.filterForm.get('minPrice').value,
+      "maxPrice": this.filterForm.get('maxPrice').value,
+      "page": this.page,
+      "size": this.pageSize
+    });
+    this.stompService.stompClient.send('/frontend/ticketsAbovePrice', {}, message);
+  }
+
   deleteTicketById(id: number) {
-    this.ticketService.deleteTicketById(id).pipe(
-      tap(() => {this.toastService.error("Item Removed!", "Info", {
-        positionClass: "toast-bottom-center"
-      });
+    this.ticketService.deleteTicketById(id, this.page, this.pageSize).pipe(
+      tap(() => {
+        this.toastService.error("Item Removed!", "Info", {
+          positionClass: "toast-bottom-center"
+        });
       })
     ).subscribe();
   }
@@ -155,15 +137,17 @@ export class TicketComponent implements OnInit {
       }))
     ).subscribe();
   }
+
   onPageSizeChange() {
     // @ts-ignore
     this.length = Array(Math.ceil(this.arraySize / this.pageSize)).fill().map((x, i) => i);
     this.page = 0;
-    this.btn(0, this.pageSize);
+    this.pagination(0, this.pageSize);
   }
+
   updatePageNumber(event) {
     this.page = event;
-    this.btn(this.page, this.pageSize);
+    this.pagination(this.page, this.pageSize);
 
   }
 }

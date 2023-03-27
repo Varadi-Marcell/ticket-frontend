@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {catchError, map, Observable, tap, throwError} from "rxjs";
 import {Ticket} from "../model/Ticket";
 import {TicketDto} from "../model/TicketDto";
@@ -30,12 +30,24 @@ export class TicketService {
     return this.http.get<Ticket>('/apis/api/v1/ticket/' + id);
   }
 
-  deleteTicketById(id: number): Observable<number> {
-    return this.http.delete<number>('/apis/api/v1/ticket/' + id);
+  deleteTicketById(id: number,page:number,size:number): Observable<number> {
+    const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
+    return this.http.delete<number>('/apis/api/v1/ticket/' + id, { params });
   }
 
   createTicket(ticket: any) {
-    return this.http.post('/api/api/v1/ticket', ticket);
+    return this.http.post('/apis/api/v1/ticket', ticket);
+  }
+
+  getTicketsAbovePrice(minPrice: number,maxPrice:number,page:number,size:number): Observable<Ticket[]> {
+    return this.http.post<Ticket[]>('/apis/api/v1/ticket/ticketsAbovePrice',
+      {
+        "minPrice":minPrice,
+        "maxPrice":maxPrice,
+        "page":page,
+        "size":size
+      }
+    );
   }
 
   // getTickets():Observable<Ticket[]>{
