@@ -29,8 +29,6 @@ export class CartComponent implements OnInit{
     try {
       await this.stompService.connect();
       this.subscribeCartEvents();
-      console.log("asdsad",this.cart);
-
     }catch (err){
       console.log(err);
     }

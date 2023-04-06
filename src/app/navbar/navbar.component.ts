@@ -4,6 +4,7 @@ import {map} from "rxjs";
 import {Router} from "@angular/router";
 import {User} from "../model/User";
 import {UserService} from "../service/user.service";
+import {StompService} from "../service/stomp.service";
 
 @Component({
   selector: 'app-navbar',
@@ -17,24 +18,15 @@ export class NavbarComponent implements OnInit{
    // user: User = this.authService.getUser();
   user: User;
 
-
   constructor(private authService: AuthService,
-              private router: Router) {
+              private router: Router,
+              ) {
   }
-  // ngOnInit(): void {
-  //   this.authService.isLoggedIn.subscribe(value => {
-  //     this.isLoggedin = value;
-  //     if (this.isLoggedin){
-  //       this.authService.getUser().subscribe(user => {
-  //         this.role = user.role;
-  //       });
-  //     } else {
-  //       this.role = "GUEST";
-  //     }
-  //   });
-  // }
+
   ngOnInit(): void {
     this.authService.user.subscribe(user => this.user = user);
+
+
 
     this.authService.isLoggedIn.subscribe(value => {
       this.isLoggedin = value;
@@ -44,6 +36,7 @@ export class NavbarComponent implements OnInit{
         this.role = "GUEST";
       }
     });
+
   }
 
   logout() {

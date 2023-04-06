@@ -65,6 +65,8 @@ export class TicketComponent implements OnInit {
       console.error('Error connecting to StompService:', error);
     }
 
+    // this.stompService.userDataChanged().subscribe(data =>console.log(data));
+
     this.authService.user.subscribe(user => this.user = user);
     this.authService.isLoggedIn.subscribe(value => {
       this.isLoggedin = value;

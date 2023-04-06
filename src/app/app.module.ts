@@ -20,12 +20,14 @@ import {ViewProfileComponent} from './user/view-profile/view-profile.component';
 import {CartComponent} from './cart/cart.component';
 import {ToastrModule} from "ngx-toastr";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import { PaymentComponent } from './cart/payment/payment.component';
+import {PaymentComponent} from './cart/payment/payment.component';
 import {StompService} from "./service/stomp.service";
+import {UpdateUserComponent} from './user/update-user/update-user.component';
+
 export function preloadProviderFactory(stompService: StompService) {
   return async () => stompService.connect();
-  // return (): void => serverMetadataService.connect();
 }
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +41,8 @@ export function preloadProviderFactory(stompService: StompService) {
     ViewUserComponent,
     ViewProfileComponent,
     CartComponent,
-    PaymentComponent
+    PaymentComponent,
+    UpdateUserComponent
   ],
   imports: [
     BrowserModule,
@@ -55,8 +58,8 @@ export function preloadProviderFactory(stompService: StompService) {
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
-    // {provide: APP_INITIALIZER, useFactory:preloadProviderFactory,deps:[]}
-    {      provide: APP_INITIALIZER,
+    {
+      provide: APP_INITIALIZER,
       useFactory: preloadProviderFactory,
       deps: [StompService],
       multi: true
@@ -67,6 +70,9 @@ export function preloadProviderFactory(stompService: StompService) {
 
 
 export class AppModule {
+
+  constructor() {
+  }
 
 
 }

@@ -3,6 +3,8 @@ import {Ticket} from "../../model/Ticket";
 import {ActivatedRoute} from "@angular/router";
 import {OrderManagementService} from "../../service/order-management.service";
 import {Item} from "../../model/Item";
+import {tap} from "rxjs";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-view-ticket',
@@ -19,7 +21,8 @@ export class ViewTicketComponent implements OnInit {
     quantity: null
   };
   constructor(private activatedRoute: ActivatedRoute,
-              private orderService:OrderManagementService) {
+              private orderService:OrderManagementService,
+              private toastService: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -46,7 +49,10 @@ export class ViewTicketComponent implements OnInit {
       this.item.ticketId = this.ticket.id;
       this.item.amount = this.ticket.price;
       this.item.quantity = this.inputnumber;
-      this.orderService.addItemToCart(this.item).subscribe();
+      this.orderService.addItemToCart(this.item).pipe(
+        tap(() => this.toastService.success("Ticket Added To Cart!", "Info", {
+          positionClass: "toast-bottom-center"
+        }))      ).subscribe();
     } else {
       console.error('Ticket is not defined yet!');
     }

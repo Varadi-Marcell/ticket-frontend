@@ -39,28 +39,4 @@ export class TicketService {
     return this.http.post('/apis/api/v1/ticket', ticket);
   }
 
-  getTicketsAbovePrice(minPrice: number,maxPrice:number,page:number,size:number): Observable<Ticket[]> {
-    return this.http.post<Ticket[]>('/apis/api/v1/ticket/ticketsAbovePrice',
-      {
-        "minPrice":minPrice,
-        "maxPrice":maxPrice,
-        "page":page,
-        "size":size
-      }
-    );
-  }
-
-  // getTickets():Observable<Ticket[]>{
-  //   this.stompService.
-  // }
-
-  // getEntityById(id: number): Observable<any> {
-  //   return this.http.get<Ticket>('/apis/api/v1/ticket/'+id);
-  //   ;
-
-  // createTicket(ticket:Ticket): Observable<Ticket[]> {
-  //   console.log(ticket)
-  //   return this.http.post<Ticket[]>("/api/ticket", ticket);
-  // }
-
 }

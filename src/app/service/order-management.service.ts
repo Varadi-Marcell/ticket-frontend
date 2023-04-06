@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Item } from "../model/Item";
-import {Observable, tap} from "rxjs";
+import {catchError, Observable, tap, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +34,18 @@ export class OrderManagementService {
   //Nincs végpont beállítva
   order(order: { firstName: string; lastName: string; email: string }, itemList: Item[]):Observable<any>{
     console.log(order);
-    return this.http.post("/apis/api/v1/order",order);
+    return this.http.post("/apis/api/v1/order",order)
+      .pipe(
+        catchError((error) => {
+          if (error.status === 400 && error.error && error.error.message) {
+            // console.log(error.error.message());
+            return throwError(error.error.message);
+          } else {
+            // console.log(error.error);
+            return throwError(error);
+          }
+        })
+      );
   }
 
 

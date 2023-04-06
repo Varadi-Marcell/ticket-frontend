@@ -19,8 +19,8 @@ export class PaymentComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
               private formBuilder: FormBuilder,
-              private orderService:OrderManagementService,
-              private toastService:ToastrService
+              private orderService: OrderManagementService,
+              private toastService: ToastrService
   ) {
 
     this.paymentForm = this.formBuilder.group({
@@ -52,14 +52,42 @@ export class PaymentComponent implements OnInit {
     this.cart = this.activatedRoute.snapshot.data['cart'];
   }
 
+  // onSubmit() {
+  //   console.log(this.paymentForm.value.firstName);
+  //   this.orderService.order(this.paymentForm.value, this.cart.itemList).pipe(
+  //     tap(() => this.toastService.success("Successful transaction!", "Info", {
+  //       positionClass: "toast-bottom-center"
+  //     }))
+  //
+  //   ).subscribe(
+  //     (error) => {
+  //       console.log(error); // kiíratjuk az error-t a konzolra
+  //       tap(() => this.toastService.error(error, "Info", {
+  //         positionClass: "toast-bottom-center"
+  //       }))
+  //     }
+  //   );
+  // }
+
   onSubmit() {
     console.log(this.paymentForm.value.firstName);
-     this.orderService.order(this.paymentForm.value,this.cart.itemList).pipe(
-       tap(()=>this.toastService.success("Successful transaction!","Info",{
-         positionClass:"toast-bottom-center"
-       }))
-     ).subscribe();
+    this.orderService.order(this.paymentForm.value, this.cart.itemList).pipe(
+      tap(() => {
+        this.toastService.success("Successful transaction!", "Info", {
+          positionClass: "toast-bottom-center"
+        });
+      })
+    ).subscribe(
+      () => {},
+      (error) => {
+        console.error(error);
+        this.toastService.error(error.error, "Error", {
+          positionClass: "toast-bottom-center"
+        });
+      }
+    );
   }
+
 
   // onCreditCardNumberChange(): void {
   //   let formattedCreditCardNumber = '';

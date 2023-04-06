@@ -12,23 +12,11 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-
-//   return this.http.get<any>('your-url', { headers })
-// .pipe(
-//   tap(response => console.log('Response headers:', response.headers))
-// );
-
-
   getAllUser(): Observable<User[]> {
-    // const headers = new HttpHeaders()
-    //   .set('Content-Type', 'application/json')
-    //   .set('Authorization', 'Bearer ' + localStorage.getItem("JWT_TOKEN"));
-
     return this.http.get<User[]>('/apis/api/v1/user', );
   }
 
   getUserById(id: number): Observable<User> {
-    console.log('/apis/api/v1/user/' + id);
     return this.http.get<User>('/apis/api/v1/user/' + id);
   }
 
@@ -39,5 +27,12 @@ export class UserService {
         console.log(data)
       )
     );
+  }
+  updateUser(userForm:any):Observable<any>{
+    return this.http.put('/apis/api/v1/user',userForm);
+  }
+  userGuard(id: number):Observable<boolean>{
+    console.log(id);
+    return this.http.post<boolean>('/apis/api/v1/user/guard',id);
   }
 }

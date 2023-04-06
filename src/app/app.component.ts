@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "./service/auth.service";
 import {StompService} from "./service/stomp.service";
 
@@ -9,6 +9,6 @@ import {StompService} from "./service/stomp.service";
 })
 export class AppComponent {
   title = 'Ticket_frontend';
-  constructor() {
+  constructor(private stompService:StompService) {
   }
 }
