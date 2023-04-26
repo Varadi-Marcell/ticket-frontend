@@ -11,32 +11,18 @@ import {StompService} from "../service/stomp.service";
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit{
+export class NavbarComponent implements OnInit {
 
-   isLoggedin = false;
-   role: string = "GUEST";
-   // user: User = this.authService.getUser();
+  role: string = "GUEST";
   user: User;
 
   constructor(private authService: AuthService,
               private router: Router,
-              ) {
+  ) {
   }
 
   ngOnInit(): void {
-    this.authService.user.subscribe(user => this.user = user);
-
-
-
-    this.authService.isLoggedIn.subscribe(value => {
-      this.isLoggedin = value;
-      if (this.isLoggedin){
-        this.role = this.user.role;
-      } else {
-        this.role = "GUEST";
-      }
-    });
-
+    this.authService.userSubject.subscribe(user => this.user = user);
   }
 
   logout() {

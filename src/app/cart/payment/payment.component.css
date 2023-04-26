@@ -1,3 +1,6 @@
  input {
   padding: 12px;
 }
+ .invalid-input {
+   border-color: red;
+ }

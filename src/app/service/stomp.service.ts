@@ -1,6 +1,6 @@
 import {EventEmitter, Injectable, OnDestroy, OnInit} from '@angular/core';
 import {Observable} from 'rxjs/internal/Observable';
-import {Client, Message, Stomp, StompSubscription} from '@stomp/stompjs';
+import {Client, CompatClient, Message, Stomp, StompSubscription} from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import {filter, first, switchMap} from 'rxjs/operators';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
@@ -18,7 +18,7 @@ import {ToastrService} from "ngx-toastr";
 })
 export class StompService {
 
-  public stompClient;
+  public stompClient: CompatClient;
   public onConnect: EventEmitter<void> = new EventEmitter<void>();
 
   private tickets: TicketDto[] = [];
@@ -46,6 +46,7 @@ export class StompService {
             positionClass: "toast-bottom-center"
           });
         });
+
 
         resolve(); // Kapcsolódás sikeres, megoldjuk a Promise-t
       }, (error) => {
@@ -77,18 +78,8 @@ export class StompService {
     return this.ticketSubject.asObservable();
   }
 
-  // public countItems():Observable<any> {
-  //   this.stompClient.subscribe('/user/topic/itemcount', (msg: { body: string; }) => {
-  //     console.log(msg.body);
-  //     this.itemCount.next(JSON.parse(msg.body));
-  //   });
-  //   return this.itemCount.asObservable();
-  // }
-
-
   public listCart(): Observable<Cart> {
     this.stompClient.subscribe('/user/queue/update-cart', (msg: { body: string }) => {
-
       this.cartSubject.next(JSON.parse(msg.body));
 
     });

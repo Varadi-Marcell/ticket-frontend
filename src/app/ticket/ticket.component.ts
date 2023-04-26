@@ -3,12 +3,10 @@ import {Ticket} from "../model/Ticket";
 import {TicketService} from "../service/ticket-service";
 import {User} from "../model/User";
 import {AuthService} from "../service/auth.service";
-import {map, Observable, Subject, Subscription, tap} from "rxjs";
+import {map, Observable, Subscription, tap} from "rxjs";
 import {ToastrService} from "ngx-toastr";
 import {OrderManagementService} from "../service/order-management.service";
 import {StompService} from "../service/stomp.service";
-import {TicketDto} from "../model/TicketDto";
-import {ActivatedRoute} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {minMaxValidator} from "./validator";
 
@@ -26,16 +24,7 @@ export class TicketComponent implements OnInit {
   @Input()
   role;
   user: User;
-  genre;
-  location;
   ticketArray: Ticket[];
-  copyData: Ticket[];
-
-  filterlist = {
-    genre: ['Rock', 'Pop', 'Jazz', 'Blues'],
-    location: ['Budapest', 'Debrecen', 'Miskolc']
-  };
-  isLoggedin: boolean;
   pageSize: number = 10;
   page: number;
   length: number[];
@@ -57,7 +46,7 @@ export class TicketComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      await this.stompService.connect();
+      // await this.stompService.connect();
       this.subscribeToArrayPayload();
       this.pagination(0, 10);
 
@@ -65,14 +54,10 @@ export class TicketComponent implements OnInit {
       console.error('Error connecting to StompService:', error);
     }
 
-    // this.stompService.userDataChanged().subscribe(data =>console.log(data));
 
-    this.authService.user.subscribe(user => this.user = user);
-    this.authService.isLoggedIn.subscribe(value => {
-      this.isLoggedin = value;
-    })
+    this.authService.userSubject.subscribe(user => this.user = user);
 
-    if (this.isLoggedin) {
+    if (this.authService.userSubject.value != null) {
       this.role = this.user.role;
     } else {
       this.role = "GUEST";

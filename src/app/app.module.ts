@@ -25,7 +25,7 @@ import {StompService} from "./service/stomp.service";
 import {UpdateUserComponent} from './user/update-user/update-user.component';
 
 export function preloadProviderFactory(stompService: StompService) {
-  return async () => stompService.connect();
+  return async () => await stompService.connect();
 }
 
 @NgModule({
@@ -54,7 +54,6 @@ export function preloadProviderFactory(stompService: StompService) {
     NgbModule,
     NgSelectModule,
     ToastrModule.forRoot(),
-
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},

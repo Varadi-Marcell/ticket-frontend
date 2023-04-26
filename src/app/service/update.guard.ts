@@ -20,11 +20,7 @@ import {switchMap} from "rxjs/operators";
 export class UpdateGuard implements CanActivate {
   user;
 
-  constructor(private authService: AuthService,
-              private router: Router,
-              private userService: UserService,
-              private activatedRoute: ActivatedRoute,
-              private userResolver: UserResolver) {
+  constructor(private authService: AuthService) {
   }
 
 
@@ -33,28 +29,8 @@ export class UpdateGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     this.authService.user.subscribe(user => this.user = user);
+    return true;
 
-    let value: boolean;
-    return this.userResolver.resolve(route, state).pipe(
-      switchMap((resolvedUser: User) => {
-        return this.userService.userGuard(resolvedUser.id).pipe(
-          map((value: boolean) => {
-            if ((this.user.role === 'ADMIN') || value) {
-              console.log(value);
-              console.log(this.user.role==='ADMIN');
-              return true;
-            } else {
-              this.router.navigate(['/']);
-              return false;
-            }
-          }),
-          catchError((error) => {
-            this.router.navigate(['/']);
-            return of(false);
-          })
-        );
-      })
-    );
   }
 
 }

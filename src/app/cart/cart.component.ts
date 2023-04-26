@@ -7,6 +7,7 @@ import {ToastrService} from "ngx-toastr";
 import {tap} from "rxjs";
 import {flip} from "@popperjs/core";
 import {StompService} from "../service/stomp.service";
+import {User} from "../model/User";
 
 @Component({
   selector: 'app-cart',
@@ -16,22 +17,15 @@ import {StompService} from "../service/stomp.service";
 export class CartComponent implements OnInit{
 
   cart:Cart;
-
   constructor(private activatedRoute:ActivatedRoute,
               private orderService:OrderManagementService,
               private toastService: ToastrService,
               private stompService:StompService) {
   }
 
-  async ngOnInit() {
-
+   ngOnInit() {
     this.cart = this.activatedRoute.snapshot.data['cart'];
-    try {
-      await this.stompService.connect();
-      this.subscribeCartEvents();
-    }catch (err){
-      console.log(err);
-    }
+    this.subscribeCartEvents();
   }
 
 
@@ -42,9 +36,6 @@ export class CartComponent implements OnInit{
       }))
     ).subscribe();
   }
-  // saveItem(item: Item) {
-  //   this.stompService.updateCart(item);
-  // }
   removeItemFromCart(id:number){
     this.orderService.removeItemFromCart(id).pipe(
       tap(()=>this.toastService.error("Item Removed!","Info",{
@@ -56,7 +47,7 @@ export class CartComponent implements OnInit{
   checkCartItems():boolean{
     if (this.cart && this.cart.itemList==null){
     }
-    return this.cart && this.cart.itemList.length==0 ? false : true;
+    return !(this.cart && this.cart.itemList.length == 0);
   }
 
   private subscribeCartEvents() {

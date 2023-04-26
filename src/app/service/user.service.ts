@@ -20,6 +20,10 @@ export class UserService {
     return this.http.get<User>('/apis/api/v1/user/' + id);
   }
 
+  getNormalUser() {
+    return this.http.get<User>('/apis/api/v1/user/');
+  }
+
 
   getUser() : Observable<User>{
     return this.http.get<User>('/apis/api/v1/user/profile').pipe(
@@ -32,7 +36,6 @@ export class UserService {
     return this.http.put('/apis/api/v1/user',userForm);
   }
   userGuard(id: number):Observable<boolean>{
-    console.log(id);
     return this.http.post<boolean>('/apis/api/v1/user/guard',id);
   }
 }

@@ -11,12 +11,11 @@ import {UserService} from "./user.service";
 @Injectable({
   providedIn: 'root'
 })
-export class UserResolver implements Resolve<User> {
-
+export class AdminUpdateUserResolver implements Resolve<User> {
   constructor(private service: UserService) {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<User> {
-    return this.service.getUser();
+    return this.service.getUserById((route.params['id']));
   }
 }

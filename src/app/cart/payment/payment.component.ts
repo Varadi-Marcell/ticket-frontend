@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Cart} from "../../model/Cart";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
 import {OrderManagementService} from "../../service/order-management.service";
 import {tap} from "rxjs";
 import {ToastrService} from "ngx-toastr";
+import {User} from "../../model/User";
 
 @Component({
   selector: 'app-payment',
@@ -14,13 +15,15 @@ import {ToastrService} from "ngx-toastr";
 export class PaymentComponent implements OnInit {
 
   cart: Cart
+
   paymentForm: FormGroup;
   creditCardNumber: string = '';
 
   constructor(private activatedRoute: ActivatedRoute,
               private formBuilder: FormBuilder,
               private orderService: OrderManagementService,
-              private toastService: ToastrService
+              private toastService: ToastrService,
+              private router:Router
   ) {
 
     this.paymentForm = this.formBuilder.group({
@@ -70,22 +73,30 @@ export class PaymentComponent implements OnInit {
   // }
 
   onSubmit() {
-    console.log(this.paymentForm.value.firstName);
-    this.orderService.order(this.paymentForm.value, this.cart.itemList).pipe(
-      tap(() => {
-        this.toastService.success("Successful transaction!", "Info", {
-          positionClass: "toast-bottom-center"
-        });
-      })
-    ).subscribe(
-      () => {},
-      (error) => {
-        console.error(error);
-        this.toastService.error(error.error, "Error", {
-          positionClass: "toast-bottom-center"
-        });
-      }
-    );
+    if (this.paymentForm.valid) {
+      console.log(this.paymentForm.value.firstName);
+      this.orderService.order(this.paymentForm.value, this.cart.itemList).pipe(
+        tap(() => {
+          this.toastService.success("Successful transaction!", "Info", {
+            positionClass: "toast-bottom-center"
+          });
+        })
+      ).subscribe(
+        () => {
+          this.router.navigate(['/ticket']);
+
+        },
+        (error) => {
+          console.error(error);
+          this.toastService.error(error.error, "Error", {
+            positionClass: "toast-bottom-center"
+          });
+        }
+      );
+    } else {
+      this.paymentForm.markAllAsTouched();
+    }
+
   }
 
 

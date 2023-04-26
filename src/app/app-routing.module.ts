@@ -18,6 +18,7 @@ import {PaymentComponent} from "./cart/payment/payment.component";
 import {OrderResolver} from "./service/order.resolver";
 import {UpdateUserComponent} from "./user/update-user/update-user.component";
 import {UpdateGuard} from "./service/update.guard";
+import {AdminUpdateUserResolver} from "./service/admin-update-user.resolver";
 
 const routes: Routes = [
   {
@@ -58,8 +59,13 @@ const routes: Routes = [
   {
     path:"update-user/:id",
     component:UpdateUserComponent,
-    resolve:{user:UserResolver},
+    resolve:{user:AdminUpdateUserResolver},
     canActivate:[UpdateGuard]
+  },
+  {
+    path:"update-user",
+    component:UpdateUserComponent,
+    resolve:{user:UserResolver}
   },
   {
     path: "view-profile",
@@ -77,7 +83,8 @@ const routes: Routes = [
   {
     path:"view-cart/payment",
     component:PaymentComponent,
-    resolve: {cart:ViewCartResolver}
+    resolve: {
+      cart:ViewCartResolver}
 
   },
 

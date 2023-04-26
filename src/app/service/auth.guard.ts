@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {map, Observable, tap} from 'rxjs';
 import {AuthService} from "./auth.service";
@@ -9,8 +9,10 @@ import {UserService} from "./user.service";
 })
 export class AuthGuard implements CanActivate {
   user;
+
   constructor(private authService: AuthService,
-              private router:Router) {}
+              private router: Router) {
+  }
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -26,8 +28,6 @@ export class AuthGuard implements CanActivate {
     }
   }
 
-  // return this.authService.getUser().pipe(
-    //   map(user => user.role === 'ADMIN'));
-  }
+}
 
 

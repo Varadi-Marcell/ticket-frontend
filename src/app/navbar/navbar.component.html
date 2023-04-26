@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light container-fluid">
   <div class="container-fluid">
     <a class="navbar-brand"><h1>TicketWebshop</h1></a>
-    <ul class="navbar-nav container " *ngIf="isLoggedin">
+    <ul class="navbar-nav container " *ngIf="user">
       <li>
         <div class="dropdown" style="padding-right: 35px;">
           <button class="btn btn-secondary dropdown-toggle " type="button" id="dropdownMenuButton"
@@ -17,7 +17,7 @@
               </a>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link" [routerLink]="'/update-user/' + user.id" role="button" aria-expanded="false">
+              <a class="nav-link" [routerLink]="'/update-user/'" role="button" aria-expanded="false">
                 <i class="bi bi-tools"></i>
                 Change my details
               </a>
@@ -51,7 +51,7 @@
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-        <li *ngIf="role =='ADMIN'" class="nav-item ">
+        <li *ngIf="user?.role =='ADMIN'" class="nav-item ">
           <a class="nav-link " routerLink="user" role="button"
              aria-expanded="false">
             Users
@@ -65,16 +65,16 @@
           </a>
         </li>
 
-        <li *ngIf="role == 'ADMIN' " class="nav-item">
+        <li *ngIf="user?.role == 'ADMIN' " class="nav-item">
           <a class="nav-link active" aria-current="page" routerLink="create-ticket">Create Ticket</a>
         </li>
-        <li class="nav-item" *ngIf="!isLoggedin">
+        <li class="nav-item" *ngIf="!user">
           <a class="nav-link active" aria-current="page" routerLink="register">Register</a>
         </li>
-        <li class="nav-item" *ngIf="!isLoggedin">
+        <li class="nav-item" *ngIf="!user">
           <a class="nav-link active" aria-current="page" routerLink="login">Login</a>
         </li>
-        <li class="nav-item" *ngIf="isLoggedin">
+        <li class="nav-item" *ngIf="user">
           <div class="nav-link active" aria-current="page" routerLink="ticket" (click)="logout()">Logout</div>
         </li>
 
