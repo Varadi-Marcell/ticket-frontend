@@ -36,12 +36,9 @@ export class StompService {
       const socket = new SockJS('http://localhost:8080/stomp-endpoint');
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect({}, (frame) => {
-        console.log('Connected: ' + frame);
         this.onConnect.emit();
 
         this.stompClient.subscribe('/user/topic/private/userdata', (msg: { body: string; }) => {
-          console.log(msg);
-          console.log(msg.body);
           this.toastService.success(msg.body, "Info", {
             positionClass: "toast-bottom-center"
           });
@@ -50,7 +47,6 @@ export class StompService {
 
         resolve(); // Kapcsolódás sikeres, megoldjuk a Promise-t
       }, (error) => {
-        console.error('Error connecting to StompService:', error);
         reject(error); // Hiba a kapcsolat során, elutasítjuk a Promise-t
       });
     });
@@ -58,7 +54,6 @@ export class StompService {
 
   public getTickets(): Observable<any> {
     this.stompClient.subscribe('/topic/ticket-response', (message) => {
-      console.log(JSON.parse(message.body));
       const tickets: TicketDto[] = JSON.parse(message.body);
       this.tickets = tickets;
       this.ticketSubject.next(this.tickets);
@@ -69,7 +64,6 @@ export class StompService {
 
   public secretPayload(): Observable<any> {
     this.stompClient.subscribe('/user/topic/private', (msg: { body: string; }) => {
-      console.log(JSON.parse(msg.body));
       const tickets: TicketDto[] = JSON.parse(msg.body);
       this.tickets = tickets;
       this.ticketSubject.next(this.tickets);

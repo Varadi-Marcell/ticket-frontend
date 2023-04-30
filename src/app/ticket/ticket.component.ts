@@ -1,4 +1,14 @@
-import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import {Ticket} from "../model/Ticket";
 import {TicketService} from "../service/ticket-service";
 import {User} from "../model/User";
@@ -7,8 +17,9 @@ import {map, Observable, Subscription, tap} from "rxjs";
 import {ToastrService} from "ngx-toastr";
 import {OrderManagementService} from "../service/order-management.service";
 import {StompService} from "../service/stomp.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {minMaxValidator} from "./validator";
+import {ActivatedRoute} from "@angular/router";
 
 
 @Component({
@@ -18,10 +29,7 @@ import {minMaxValidator} from "./validator";
 })
 export class TicketComponent implements OnInit {
 
-  @Input() list;
-  @Output() onFilterChange = new EventEmitter();
 
-  @Input()
   role;
   user: User;
   ticketArray: Ticket[];
@@ -30,37 +38,43 @@ export class TicketComponent implements OnInit {
   length: number[];
   arraySize: number;
   filterForm: FormGroup;
+  selectedLocation: string;
+  locationArr: string[];
+  genreArr: string[];
 
   constructor(private ticketService: TicketService,
               private authService: AuthService,
               private toastService: ToastrService,
               private orderService: OrderManagementService,
               private stompService: StompService,
-              private formBuilder: FormBuilder) {
-    this.filterForm = this.formBuilder.group({
-      minPrice: ['', [Validators.required, Validators.min(0)]],
-      maxPrice: ['', [Validators.required, Validators.max(1000)]],
-    }, {validator: minMaxValidator()});
+              private formBuilder: FormBuilder,
+              private changeDetector: ChangeDetectorRef,
+              private activatedRoute: ActivatedRoute
+  ) {
   }
 
+  ngOnInit() {
+    this.locationArr = this.activatedRoute.snapshot.data['locations'];
+    this.genreArr = this.activatedRoute.snapshot.data['genres'];
 
-  async ngOnInit() {
-    try {
-      // await this.stompService.connect();
-      this.subscribeToArrayPayload();
-      this.pagination(0, 10);
+    console.log(this.locationArr);
+    console.log(this.genreArr)
 
-    } catch (error) {
-      console.error('Error connecting to StompService:', error);
-    }
+    this.filterForm = this.formBuilder.group({
+      location: new FormControl(''),
+      minPrice: new FormControl('',Validators.min(0)),
+      maxPrice: new FormControl('',Validators.max(1000)),
+      startDate: new FormControl(''),
+      endDate: new FormControl(''),
+      genre: new FormControl(),
+    }, {validator: minMaxValidator()});
 
+    this.subscribeToArrayPayload();
+    this.pagination(0, 10);
 
     this.authService.userSubject.subscribe(user => this.user = user);
-
     if (this.authService.userSubject.value != null) {
       this.role = this.user.role;
-    } else {
-      this.role = "GUEST";
     }
 
     this.pagination(0, 10);
@@ -70,7 +84,8 @@ export class TicketComponent implements OnInit {
 
   pagination(page: number, size: number) {
     let message = JSON.stringify({"page": page, "size": size});
-    this.stompService.stompClient.send('/frontend/secret', {}, message);
+    // this.stompService.stompClient.send('/frontend/secret', {}, message);
+    this.submit();
   }
 
   private subscribeToArrayPayload() {
@@ -92,7 +107,6 @@ export class TicketComponent implements OnInit {
   }
 
   filterTicketsByPrice() {
-
     let message = JSON.stringify({
       "minPrice": this.filterForm.get('minPrice').value,
       "maxPrice": this.filterForm.get('maxPrice').value,
@@ -137,4 +151,23 @@ export class TicketComponent implements OnInit {
     this.pagination(this.page, this.pageSize);
 
   }
+
+  submit() {
+      console.log(this.filterForm.value);
+      let message = JSON.stringify({
+        "location": this.filterForm.get('location').value,
+        "minPrice": this.filterForm.get('minPrice').value,
+        "maxPrice": this.filterForm.get('maxPrice').value,
+        "startDate": this.filterForm.get('startDate').value,
+        "endDate": this.filterForm.get('endDate').value,
+        "genre": this.filterForm.get('genre').value,
+        "page": this.page,
+        "size": this.pageSize
+      });
+      this.stompService.stompClient.send('/frontend/filterTicket', {}, message);
+
+
+
+  }
+
 }

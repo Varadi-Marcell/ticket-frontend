@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/ticket']);
         localStorage.setItem('JWT_TOKEN', response.token);
         localStorage.setItem('user', JSON.stringify(response.userDto));
+        // this.authService.userSubject.next(response.userDto);
       }
     );
   }

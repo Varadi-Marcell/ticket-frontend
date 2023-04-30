@@ -13,8 +13,7 @@ import {first} from "rxjs/operators";
 export class TicketService {
 
 
-  constructor(private http: HttpClient,
-              private stompService: StompService) {
+  constructor(private http: HttpClient) {
   }
 
   getAllTicket(page: number, size: number): Observable<TicketDto> {
@@ -38,5 +37,11 @@ export class TicketService {
   createTicket(ticket: any) {
     return this.http.post('/apis/api/v1/ticket', ticket);
   }
+  getLocations(): Observable<string[]>{
+    return this.http.get<string[]>("/apis/api/v1/ticket/location");
+  }
 
+  getGenres() :Observable<string[]>{
+  return this.http.get<string[]>("/apis/api/v1/ticket/genre");
+  }
 }

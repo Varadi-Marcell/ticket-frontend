@@ -10,14 +10,49 @@
              src="https://cdn.logojoy.com/wp-content/uploads/2018/05/30163918/1241-768x591.png">
       </div>
 
+      <form [formGroup]="filterForm" (submit)="submit()">
+        <h3>Filter Tickets</h3>
 
-      <form [formGroup]="filterForm" (ngSubmit)="filterTicketsByPrice()">
-        Filter By Price:
+        <label>Location:</label>
+        <div class="ng-select mb-3">
+          <ng-select [items]="locationArr"
+                     formControlName="location"
+          >
+          </ng-select>
+
+        </div>
+
         <div class="input-group mb-3">
-          <input type="number" formControlName="minPrice" class="form-control" placeholder="minPrice" >
+          <input type="number" formControlName="minPrice" class="form-control" placeholder="minPrice">
           <input type="number" formControlName="maxPrice" class="form-control" placeholder="maxPrice">
         </div>
+
+        <div>
+          <div class="form-group">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" class="form-control" formControlName="startDate">
+          </div>
+          <div class="form-group">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" class="form-control" formControlName="endDate">
+          </div>
+        </div>
+
+        <label>Genre:</label>
+        <div class="ng-select mb-3" >
+          <ng-select [items]="genreArr"
+                     appendTo="body"
+                     formControlName="genre"
+                     class="custom">
+
+          >
+          </ng-select>
+
+        </div>
+
+
         <button type="submit" class="btn btn-primary">Filter</button>
+
       </form>
     </div>
 

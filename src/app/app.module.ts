@@ -9,7 +9,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {NavbarComponent} from './navbar/navbar.component';
 import {ViewTicketComponent} from './ticket/view-ticket/view-ticket.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {NgSelectModule} from "@ng-select/ng-select";
+import {NgSelectConfig, NgSelectModule} from "@ng-select/ng-select";
 import {CreateTicketComponent} from './ticket/create-ticket/create-ticket.component';
 import {LoginComponent} from './login/login.component';
 import {TokenInterceptor} from "./interceptor/tokenInterceptor";
@@ -70,7 +70,10 @@ export function preloadProviderFactory(stompService: StompService) {
 
 export class AppModule {
 
-  constructor() {
+  constructor(private config:NgSelectConfig) {
+    this.config.notFoundText = 'Custom not found';
+    this.config.appendTo = 'body';
+    this.config.bindValue = 'value';
   }
 
 
