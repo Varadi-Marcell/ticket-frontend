@@ -106,16 +106,6 @@ export class TicketComponent implements OnInit {
     });
   }
 
-  filterTicketsByPrice() {
-    let message = JSON.stringify({
-      "minPrice": this.filterForm.get('minPrice').value,
-      "maxPrice": this.filterForm.get('maxPrice').value,
-      "page": this.page,
-      "size": this.pageSize
-    });
-    this.stompService.stompClient.send('/frontend/ticketsAbovePrice', {}, message);
-  }
-
   deleteTicketById(id: number) {
     this.ticketService.deleteTicketById(id, this.page, this.pageSize).pipe(
       tap(() => {

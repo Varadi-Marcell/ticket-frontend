@@ -62,7 +62,8 @@ export function preloadProviderFactory(stompService: StompService) {
       useFactory: preloadProviderFactory,
       deps: [StompService],
       multi: true
-    }
+    },
+
   ],
   bootstrap: [AppComponent]
 })
@@ -70,7 +71,7 @@ export function preloadProviderFactory(stompService: StompService) {
 
 export class AppModule {
 
-  constructor(private config:NgSelectConfig) {
+  constructor(private config: NgSelectConfig) {
     this.config.notFoundText = 'Custom not found';
     this.config.appendTo = 'body';
     this.config.bindValue = 'value';

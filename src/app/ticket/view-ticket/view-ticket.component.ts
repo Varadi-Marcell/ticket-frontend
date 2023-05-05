@@ -5,6 +5,7 @@ import {OrderManagementService} from "../../service/order-management.service";
 import {Item} from "../../model/Item";
 import {tap} from "rxjs";
 import {ToastrService} from "ngx-toastr";
+import {AuthService} from "../../service/auth.service";
 
 @Component({
   selector: 'app-view-ticket',
@@ -22,7 +23,8 @@ export class ViewTicketComponent implements OnInit {
   };
   constructor(private activatedRoute: ActivatedRoute,
               private orderService:OrderManagementService,
-              private toastService: ToastrService) {
+              private toastService: ToastrService,
+              private authService: AuthService) {
   }
 
   ngOnInit(): void {
@@ -44,7 +46,7 @@ export class ViewTicketComponent implements OnInit {
   }
 
   addToBasket() {
-    if (this.ticket) {
+    if (this.ticket && this.authService.getUser()!=null) {
       console.log(this.ticket.id);
       this.item.ticketId = this.ticket.id;
       this.item.amount = this.ticket.price;
@@ -54,7 +56,9 @@ export class ViewTicketComponent implements OnInit {
           positionClass: "toast-bottom-center"
         }))      ).subscribe();
     } else {
-      console.error('Ticket is not defined yet!');
+      this.toastService.info("Please login to buy your ticket!", "Info", {
+        positionClass: "toast-bottom-center"
+      });
     }
   }
 
