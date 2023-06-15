@@ -62,31 +62,23 @@ export class TicketComponent implements OnInit {
 
     this.filterForm = this.formBuilder.group({
       location: new FormControl(''),
-      minPrice: new FormControl('',Validators.min(0)),
-      maxPrice: new FormControl('',Validators.max(1000)),
+      minPrice: new FormControl('', Validators.min(0)),
+      maxPrice: new FormControl('', Validators.max(1000)),
       startDate: new FormControl(''),
       endDate: new FormControl(''),
       genre: new FormControl(),
     }, {validator: minMaxValidator()});
 
     this.subscribeToArrayPayload();
-    this.pagination(0, 10);
-
     this.authService.userSubject.subscribe(user => this.user = user);
     if (this.authService.userSubject.value != null) {
       this.role = this.user.role;
     }
 
-    this.pagination(0, 10);
-
-
-  }
-
-  pagination(page: number, size: number) {
-    let message = JSON.stringify({"page": page, "size": size});
-    // this.stompService.stompClient.send('/frontend/secret', {}, message);
     this.submit();
+
   }
+
 
   private subscribeToArrayPayload() {
     this.stompService.secretPayload().subscribe(data => {
@@ -107,6 +99,7 @@ export class TicketComponent implements OnInit {
   }
 
   deleteTicketById(id: number) {
+    console.log(this.page)
     this.ticketService.deleteTicketById(id, this.page, this.pageSize).pipe(
       tap(() => {
         this.toastService.error("Item Removed!", "Info", {
@@ -132,30 +125,28 @@ export class TicketComponent implements OnInit {
   onPageSizeChange() {
     // @ts-ignore
     this.length = Array(Math.ceil(this.arraySize / this.pageSize)).fill().map((x, i) => i);
-    this.page = 0;
-    this.pagination(0, this.pageSize);
+    // this.submit();
   }
 
   updatePageNumber(event) {
     this.page = event;
-    this.pagination(this.page, this.pageSize);
-
+    this.submit();
   }
 
   submit() {
-      console.log(this.filterForm.value);
-      let message = JSON.stringify({
-        "location": this.filterForm.get('location').value,
-        "minPrice": this.filterForm.get('minPrice').value,
-        "maxPrice": this.filterForm.get('maxPrice').value,
-        "startDate": this.filterForm.get('startDate').value,
-        "endDate": this.filterForm.get('endDate').value,
-        "genre": this.filterForm.get('genre').value,
-        "page": this.page,
-        "size": this.pageSize
-      });
-      this.stompService.stompClient.send('/frontend/filterTicket', {}, message);
-
+    console.log(this.page, this.pageSize);
+    console.log(this.filterForm.value);
+    let message = JSON.stringify({
+      "location": this.filterForm.get('location').value,
+      "minPrice": this.filterForm.get('minPrice').value,
+      "maxPrice": this.filterForm.get('maxPrice').value,
+      "startDate": this.filterForm.get('startDate').value,
+      "endDate": this.filterForm.get('endDate').value,
+      "genre": this.filterForm.get('genre').value,
+      "page": this.page,
+      "size": this.pageSize
+    });
+    this.stompService.stompClient.send('/frontend/filterTicket', {}, message);
 
 
   }

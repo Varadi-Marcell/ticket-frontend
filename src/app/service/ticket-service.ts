@@ -16,32 +16,25 @@ export class TicketService {
   constructor(private http: HttpClient) {
   }
 
-  getAllTicket(page: number, size: number): Observable<TicketDto> {
-    return this.http.get<TicketDto>('/apis/api/v1/ticket', {
-      params: {
-        page: page,
-        size: size
-      }
-    })
-  }
-
   getTicketById(id: number): Observable<Ticket> {
     return this.http.get<Ticket>('/apis/api/v1/ticket/' + id);
   }
 
   deleteTicketById(id: number,page:number,size:number): Observable<number> {
     const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
+
     return this.http.delete<number>('/apis/api/v1/ticket/' + id, { params });
   }
 
   createTicket(ticket: any) {
     return this.http.post('/apis/api/v1/ticket', ticket);
   }
-  getLocations(): Observable<string[]>{
+
+  getLocations(): Observable<string[]> {
     return this.http.get<string[]>("/apis/api/v1/ticket/location");
   }
 
-  getGenres() :Observable<string[]>{
-  return this.http.get<string[]>("/apis/api/v1/ticket/genre");
+  getGenres(): Observable<string[]> {
+    return this.http.get<string[]>("/apis/api/v1/ticket/genre");
   }
 }

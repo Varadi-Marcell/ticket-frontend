@@ -1,49 +1,52 @@
 import {Component, NgZone, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../service/auth.service";
 import {Router} from "@angular/router";
+import {tap} from "rxjs";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
   registerForm: FormGroup;
   loading = false;
-  submitted = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private ngZone: NgZone,
-
     private router: Router
-  ) { }
-
-  ngOnInit() {
+  ) {
     this.registerForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      email: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      name: new FormControl('', [Validators.maxLength(10), Validators.minLength(3), Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.maxLength(10), Validators.minLength(3), Validators.required]),
     });
   }
 
-  get f() { return this.registerForm.controls; }
-
   onSubmit() {
-    this.submitted = true;
 
+    this.registerForm.markAllAsTouched();
     if (this.registerForm.invalid) {
       return;
     }
 
-    this.authService.register(this.registerForm.value.name,this.registerForm.value.email,this.registerForm.value.password)
-      .subscribe(
-        (response) => {
+    this.authService.register(this.registerForm.value.name, this.registerForm.value.email, this.registerForm.value.password)
+      .pipe(
+        tap((response) => {
           localStorage.setItem('JWT_TOKEN', response.token);
           this.router.navigate(['/login']);
-        },
-      );
+        })
+      )
+      .subscribe({
+        error: (error) => {
+          console.error(error);
+          document.getElementById('error').innerText = error.error;
+
+        }
+      });
+
   }
 }

@@ -92,6 +92,7 @@ export class PaymentComponent implements OnInit {
             positionClass: "toast-bottom-center"
           });
         }
+
       );
     } else {
       this.paymentForm.markAllAsTouched();

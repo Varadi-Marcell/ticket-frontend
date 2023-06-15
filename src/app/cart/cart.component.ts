@@ -60,8 +60,4 @@ export class CartComponent implements OnInit, OnDestroy {
     }
     return !(this.cart && this.cart.itemList.length == 0);
   }
-
-  subscribeCartEvents() {
-
-  }
 }

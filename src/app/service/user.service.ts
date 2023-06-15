@@ -32,10 +32,11 @@ export class UserService {
       )
     );
   }
-  updateUser(userForm:any):Observable<any>{
-    return this.http.put('/apis/api/v1/user',userForm);
+  updateUser(userForm:any):Observable<void>{
+    return this.http.put<void>('/apis/api/v1/user',userForm);
   }
-  userGuard(id: number):Observable<boolean>{
-    return this.http.post<boolean>('/apis/api/v1/user/guard',id);
+
+  deleteUserById(id: number) : Observable<void>{
+    return this.http.delete<void>('/apis/api/v1/user/' + id);
   }
 }
