@@ -12,6 +12,9 @@ import {tap} from "rxjs";
 export class RegisterComponent {
   registerForm: FormGroup;
   loading = false;
+  showError = false;
+  errorMessage: string;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,9 +45,8 @@ export class RegisterComponent {
       )
       .subscribe({
         error: (error) => {
-          console.error(error);
-          document.getElementById('error').innerText = error.error;
-
+          this.showError = true;
+          this.errorMessage = error.error;
         }
       });
 

@@ -40,7 +40,7 @@
           </button>
         </div>
       </form>
-      <div id="error" class="text-danger"></div>
+      <div *ngIf="showError" id="error" class="alert alert-danger">{{ errorMessage }}</div>
     </div>
   </div>
 </div>

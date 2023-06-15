@@ -10,13 +10,15 @@ import {tap} from "rxjs";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent  {
+export class LoginComponent {
   loginForm: FormGroup;
+  showError = false;
+  errorMessage: string;
 
   constructor(private formBuilder: FormBuilder,
               private authService: AuthService,
               private router: Router,
-              private stompService:StompService) {
+              private stompService: StompService) {
     this.loginForm = this.formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.maxLength(10), Validators.minLength(3), Validators.required]),
@@ -40,7 +42,7 @@ export class LoginComponent  {
     //     });
     //   }
     // );
-    this.authService.login(email,password).pipe(
+    this.authService.login(email, password).pipe(
       tap(async (response) => {
         localStorage.setItem('JWT_TOKEN', response.token);
         localStorage.setItem('user', JSON.stringify(response.userDto));
@@ -50,8 +52,10 @@ export class LoginComponent  {
       })
     ).subscribe({
       error: (error) => {
-        document.getElementById('error').innerText = error.error;
+        this.showError = true;
+        this.errorMessage = error.error;
       }
+
     })
   }
 
